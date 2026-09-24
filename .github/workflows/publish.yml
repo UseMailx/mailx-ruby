@@ -1,0 +1,30 @@
+name: Publish to RubyGems
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@762794c140bbeda0f1224786aa33b4b46783a6c1 # v1.326.0
+        with:
+          ruby-version: "3.2"
+
+      - name: Run tests
+        run: ruby -Ilib -Ispec spec/client_test.rb
+
+      - name: Build and publish gem
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: |
+          gem build mailx-sdk.gemspec
+          gem push mailx-sdk-*.gem
