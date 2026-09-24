@@ -2,6 +2,12 @@
 
 Official Ruby SDK for MailX.
 
+```bash
+gem install mailx-sdk
+```
+
+Or add to your `Gemfile`:
+
 ```ruby
 gem "mailx-sdk"
 ```
